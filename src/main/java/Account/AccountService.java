@@ -11,7 +11,7 @@ public interface AccountService {
 
     void balance(int accountId) throws UnknownAccountException;
 
-    void deposit(int accountId, int amount) throws NotEnoughMoneyException, UnknownAccountException;
+    void deposit(int accountId, int amount) throws UnknownAccountException;
 
     void transfer(int from, int to, int amount) throws NotEnoughMoneyException, UnknownAccountException;
 }

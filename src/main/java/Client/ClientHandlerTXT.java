@@ -1,5 +1,6 @@
 package Client;
 
+import Account.AccountServiceFromDB;
 import Account.AccountServiceFromTxt;
 import Exсeption.NotEnoughMoneyException;
 import Exсeption.UnknownAccountException;
@@ -8,38 +9,37 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class ClientHandler {
+public class ClientHandlerTXT implements ClientHadler {
     private AccountServiceFromTxt accountServiceFromTxt;
 
-    public ClientHandler() {
+    public ClientHandlerTXT() {
         accountServiceFromTxt = new AccountServiceFromTxt();
     }
 
-    public boolean commandHandler(String command) {
-        String[] commandSplit = command.split("\\s*(\\s)");
-        boolean exit = true;
-        switch (commandSplit[0]) {
-            case "balance":
-                balance(commandSplit);
-                break;
-            case "withdraw":
-                withdraw(commandSplit);
-                break;
-            case "deposit":
-                deposit(commandSplit);
-                break;
-            case "transfer":
-                transfer(commandSplit);
-                break;
-            case "exit":
-                exit = false;
-                accountServiceFromTxt.saveInFile();
-                break;
-            default:
-                System.out.println("Комманда не правильно введена");
-        }
-        return exit;
-    }
+//    public boolean commandHandler(String command) {
+//        String[] commandSplit = command.split("\\s*(\\s)");
+//        boolean exit = true;
+//        switch (commandSplit[0]) {
+//            case "balance":
+//                balance(commandSplit);
+//                break;
+//            case "withdraw":
+//                withdraw(commandSplit);
+//                break;
+//            case "deposit":
+//                deposit(commandSplit);
+//                break;
+//            case "transfer":
+//                transfer(commandSplit);
+//                break;
+//            case "exit":
+//                exit = false;
+//                break;
+//            default:
+//                System.out.println("Комманда не правильно введена");
+//        }
+//        return exit;
+//    }
 
     public void withdraw(String[] commandSplit) {
         try {
@@ -54,7 +54,6 @@ public class ClientHandler {
     public void balance(String[] commandSplit) {
 
         try {
-            System.out.println(Integer.parseInt(commandSplit[1]));
             accountServiceFromTxt.balance(Integer.parseInt(commandSplit[1]));
         } catch (UnknownAccountException e) {
             e.printStackTrace();
@@ -91,6 +90,8 @@ public class ClientHandler {
                 clientCommand = reader.readLine();
                 exit = commandHandler(clientCommand);
             }
+            accountServiceFromTxt.saveInFile();
+
         } catch (IOException e) {
             e.printStackTrace();
         }

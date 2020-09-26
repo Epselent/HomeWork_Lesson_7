@@ -6,7 +6,7 @@ public class Account {
     private int amount;
     private String idHolderAmount;
 
-    private Account(int id, String holder, int amount) {
+    public Account(int id, String holder, int amount) {
         this.id = id;
         this.holder = holder;
         this.amount = amount;
@@ -46,7 +46,7 @@ public class Account {
         return idHolderAmount;
     }
 
-    public static Account getDataOfString(String str) {
+    protected static Account getDataOfString(String str) {
         String[] arr = str.split("\\$");
         return new Account(Integer.parseInt(arr[0]), arr[1], Integer.parseInt(arr[2]));
     }
