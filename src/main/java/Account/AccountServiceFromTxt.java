@@ -30,7 +30,7 @@ public class AccountServiceFromTxt implements AccountService {
     }
 
     @Override
-    public void deposit(int accountId, int amount) throws  UnknownAccountException {
+    public void deposit(int accountId, int amount) throws UnknownAccountException {
         account = accountList.searchAccount(accountId);
         account.setAmount(account.getAmount() + amount);
         accountList.setAccountHashMap(accountId, account);

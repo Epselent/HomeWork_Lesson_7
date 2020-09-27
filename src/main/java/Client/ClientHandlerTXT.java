@@ -16,31 +16,6 @@ public class ClientHandlerTXT implements ClientHadler {
         accountServiceFromTxt = new AccountServiceFromTxt();
     }
 
-//    public boolean commandHandler(String command) {
-//        String[] commandSplit = command.split("\\s*(\\s)");
-//        boolean exit = true;
-//        switch (commandSplit[0]) {
-//            case "balance":
-//                balance(commandSplit);
-//                break;
-//            case "withdraw":
-//                withdraw(commandSplit);
-//                break;
-//            case "deposit":
-//                deposit(commandSplit);
-//                break;
-//            case "transfer":
-//                transfer(commandSplit);
-//                break;
-//            case "exit":
-//                exit = false;
-//                break;
-//            default:
-//                System.out.println("Комманда не правильно введена");
-//        }
-//        return exit;
-//    }
-
     public void withdraw(String[] commandSplit) {
         try {
             accountServiceFromTxt.withdraw(Integer.parseInt(commandSplit[1]), Integer.parseInt(commandSplit[2]));

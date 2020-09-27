@@ -16,7 +16,6 @@ public class ClientHandlerDB implements ClientHadler {
         accountServiceFromDB = new AccountServiceFromDB();
     }
 
-
     public void withdraw(String[] commandSplit) {
         try {
             accountServiceFromDB.withdraw(Integer.parseInt(commandSplit[1]), Integer.parseInt(commandSplit[2]));

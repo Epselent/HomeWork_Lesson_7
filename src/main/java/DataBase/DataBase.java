@@ -10,6 +10,8 @@ public class DataBase {
     public static Connection connection;
     public static Statement stmt;
     private static File fileDB = new File("data.db");
+    private static PreparedStatement pstmt;
+
 
     public static void createDB() {
         if (!fileDB.exists()) {
@@ -21,7 +23,7 @@ public class DataBase {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }else {
+        } else {
             connectDB();
         }
     }
@@ -56,25 +58,30 @@ public class DataBase {
                 ")";
         String holder = new String();
         int amount = 0;
-        String insertTable;
         try {
             stmt.executeUpdate(sqlCreate);
+            pstmt = connection.prepareStatement("INSERT INTO client (holder,amount)\n" +
+                    "VALUES (?,?)");
             for (int i = 1; i <= 10; i++) {
                 holder = "Client" + i;
                 amount = (int) (Math.random() * 1000);
-                insertTable = String.format("INSERT INTO client (holder,amount)\n" +
-                        "VALUES ('%s',%s)", holder, amount);
-                stmt.executeUpdate(insertTable);
+                pstmt.setString(1, holder);
+                pstmt.setInt(2, amount);
+                pstmt.executeUpdate();
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
 
-    public static String selectAccountFromDB(String sql) throws UnknownAccountException {
+    public static String selectAccountFromDB(int id) throws UnknownAccountException {
         StringBuilder stringBuilder = new StringBuilder();
+
         try {
-            ResultSet resultSet = stmt.executeQuery(sql);
+            pstmt = connection.prepareStatement("SELECT * FROM CLIENT\n" +
+                    "where id = ?");
+            pstmt.setInt(1, id);
+            ResultSet resultSet = pstmt.executeQuery();
             if (resultSet.next()) {
                 stringBuilder.append(resultSet.getInt("id"));
                 stringBuilder.append("$");
@@ -92,9 +99,12 @@ public class DataBase {
 
     }
 
-    public static void updateTable(String sql) {
+    public static void updateTable(int amount, int id) {
         try {
-            stmt.executeUpdate(sql);
+            pstmt = connection.prepareStatement("UPDATE client SET amount = ? WHERE id =?");
+            pstmt.setInt(1, amount);
+            pstmt.setInt(2, id);
+            pstmt.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
